@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.main-container {
+    width: calc(100% - 80px)
+}

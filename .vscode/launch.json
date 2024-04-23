@@ -1,0 +1,76 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Launch",
+            "command": "dotnet watch --no-hot-reload",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/src/Infrastructure",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "https://localhost:5000"
+            },
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "Now listening",
+                "uriFormat": "https://localhost:3000"
+            }
+        },
+        {
+            "name": ".NET Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Infrastructure/bin/Debug/net8.0/CloudHotel.Infrastructure.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Infrastructure",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "https://localhost:5000"
+            },
+            "serverReadyAction": {
+                "action": "debugWithEdge",
+                "webRoot": "${workspaceFolder}/src/Presentation",
+                "pattern": "Now listening",
+                "uriFormat": "https://localhost:3000",
+                "killOnServerStop": true
+            }
+        },
+        {
+            "name": "NPM Launch",
+            "command": "npm run dev",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/src/Presentation"
+        },
+        {
+            "name": "NPM Debug",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceRoot}/src/Presentation",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "sourceMaps": true
+        }
+    ],
+    "compounds": [
+        {
+            "name": ".NET Launch / NPM Launch",
+            "configurations": ["NPM Launch", ".NET Launch"],
+            "stopAll": true
+        },
+        {
+          "name": ".NET Debug / NPM Debug",
+          "configurations": [".NET Debug", "NPM Debug"],
+          "stopAll": true
+        }
+    ]
+}
