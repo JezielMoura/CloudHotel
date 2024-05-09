@@ -71,7 +71,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
         var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
         var departure = arrival.AddDays(1);
         var command = _fixture.Create<CreateReservationCommand>();
-        command = command with { Arrival = arrival, Departure = departure, Price = Random.Shared.Next(100, 1500) };
+        command = command with { Arrival = arrival, Departure = departure, Price = Random.Shared.Next(100, 1500), RoomId = Guid.NewGuid().ToString() };
         await _client.PostAsJsonAsync("/api/reservations", command);
 
         //Act
