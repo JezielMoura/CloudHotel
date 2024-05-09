@@ -67,13 +67,6 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     [Fact]
     public async Task Search_ShouldReturnOk()
     {
-        //Arrange
-        var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
-        var departure = arrival.AddDays(1);
-        var command = _fixture.Create<CreateReservationCommand>();
-        command = command with { Arrival = arrival, Departure = departure, Price = Random.Shared.Next(100, 1500), RoomId = Guid.NewGuid().ToString() };
-        await _client.PostAsJsonAsync("/api/reservations", command);
-
         //Act
         var response = await _client.GetAsync("/api/reservations?ArrivalFrom=2000-01-01&ArrivalTo=2030-01-01");
     
