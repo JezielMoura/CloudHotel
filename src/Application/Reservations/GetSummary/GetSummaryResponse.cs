@@ -11,8 +11,8 @@ public sealed record GetSummaryResponse(
         new( arrival, departure, inHouse, reservations.Select(ReservationSummary.Create));
 }
 
-public sealed record ReservationSummary (DateOnly Arrival, DateOnly Departure, string GuestName, decimal Price)
+public sealed record ReservationSummary (DateOnly Arrival, DateOnly Departure, Guid Id, string GuestName, decimal Price)
 {
     public static ReservationSummary Create(Reservation reservation) =>
-        new (reservation.Arrival, reservation.Departure, reservation.Guest.Name, reservation.Price);
+        new (reservation.Arrival, reservation.Departure, reservation.Id, reservation.Guest.Name, reservation.Price);
 }

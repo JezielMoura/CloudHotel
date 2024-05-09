@@ -6,7 +6,4 @@ public sealed record Address(
     string City,
     string State,
     string Country
-)
-{
-    public static Address Empty => new(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
-}
+);

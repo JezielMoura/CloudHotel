@@ -30,10 +30,10 @@ public record RoomResponse(string Code, IEnumerable<DayResponse> Days)
     }
 }
 
-public record ReservationResponse(Guid Id, string Guest, int Days)
+public record ReservationResponse(Guid Id, string Guest, int Days, int Status)
 {
     public static ReservationResponse Create(Reservation reservation) =>
-        new (reservation.Id, reservation.Guest.Name, reservation.GetNightsNumber());
+        new (reservation.Id, reservation.Guest.Name, reservation.GetNightsNumber(), reservation.Status.Value);
 };
 
 public record DayResponse(DateOnly Date, ReservationResponse? Reservation)

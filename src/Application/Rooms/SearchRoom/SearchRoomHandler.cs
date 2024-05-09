@@ -5,6 +5,8 @@ internal sealed class SearchRoomHandler(IAppDbContext appDbContext) : IRequestHa
     public async Task<IEnumerable<SearchRoomGroupResponse>> Handle(SearchRoomQuery query, CancellationToken cancellationToken)
     {
         var rooms = await appDbContext.Rooms
+            .OrderBy(x => x.Name)
+            .ThenBy(x => x.Code)
             .Skip(query.Offset)
             .Take(query.Limit)
             .ToListAsync(cancellationToken);

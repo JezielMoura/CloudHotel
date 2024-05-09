@@ -18,6 +18,10 @@ internal sealed class ReservationConfiguration : IEntityTypeConfiguration<Reserv
             .HasPrecision(18, 2);
 
         builder
+            .Property(p => p.Status)
+            .HasConversion(v => v.Value, v => ReservationStatus.FromNumber(v));
+
+        builder
             .OwnsOne(p => p.Room, b => {
                 b.HasOne<Room>().WithMany().HasForeignKey(p => p.Id).OnDelete(DeleteBehavior.Cascade).IsRequired();
                 b.Property(p => p.Id).HasColumnName("RoomId");

@@ -14,6 +14,9 @@ internal sealed class ReservationRepository(AppDbContext dbContext) : IReservati
     public async Task Update(Reservation reservation) =>
         await Task.FromResult(dbContext.Reservations.Update(reservation));
 
+    public async Task<int> Count(Guid reservationId, Guid roomId, DateOnly from, DateOnly to) =>
+        await dbContext.Reservations.CountAsync(x => x.Id != reservationId && x.Room.Id == roomId && x.Arrival >= from && x.Departure <= to);
+
     public async Task Delete(Guid id)
     {
         if (await dbContext.Reservations.FindAsync(id) is {} reservation)

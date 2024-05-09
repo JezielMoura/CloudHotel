@@ -7,6 +7,7 @@ public sealed record UpdateReservationCommand(
     DateOnly Arrival, 
     DateOnly Departure,
     decimal Price,
+    int Status,
     Guid RoomId,
     string RoomCode,
     Guid GuestId,
@@ -14,15 +15,19 @@ public sealed record UpdateReservationCommand(
     string GuestEmail,
     string GuestPhone,
     string GuestDocumentNumber,
-    string GuestDocumentType) : IRequest<Result<bool, Error>>
+    string GuestDocumentType,
+    string AddressStreet,
+    string AddressPostalCode,
+    string AddressCity,
+    string AddressState,
+    string AddressCountry) : IRequest<Result<bool, Error>>
 {
-    public Reservation MapToReservation()
-    {
-        var reservation = new Reservation(Id, Arrival, Departure, Price, new(RoomId, RoomCode));
-        reservation.SetGuestDetails(GuestId, GuestName);
-        return reservation;
-    }
+    public Reservation MapToReservation() =>
+        new (Id, Arrival, Departure, Price, new(RoomId, RoomCode));
 
     public Guest MapToGuest() =>
-        new(GuestId, GuestName, GuestEmail, GuestPhone, new(GuestDocumentType, GuestDocumentNumber), Address.Empty);
+        new (GuestId, GuestName, GuestEmail, GuestPhone, new(GuestDocumentType, GuestDocumentNumber), MapToAddress());
+
+    private Address MapToAddress() =>
+        new (AddressStreet, AddressPostalCode, AddressCity, AddressState, AddressCountry);
 }

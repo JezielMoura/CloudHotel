@@ -2,7 +2,6 @@ import React from "react";
 import { Room } from "./Room";
 import { Availability } from "./Availability";
 
-
 export function RoomGroup({ roomGroup }) {
 
   return (

@@ -51,4 +51,20 @@ public sealed class ReservationTests
         //Assert
         result.Should().Be(nightPrice);
     }
+
+    [Fact]
+    public void SetGuestDetails_ShouldSetGuestProperty()
+    {
+        //Arrange
+        var roomDetails = _fixture.Create<RoomDetails>();
+        var arrivalDate = DateOnly.Parse("2025-01-01");
+        var departureDate = DateOnly.Parse("2025-01-03");
+        var reservation = new Reservation(Guid.NewGuid(), arrivalDate, departureDate, 100, roomDetails);
+        
+        //Act
+        reservation.SetGuestDetails(Guid.NewGuid(), "GuestName");
+        
+        //Assert
+        reservation.Guest.Should().NotBeNull();
+    }
 }

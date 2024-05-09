@@ -1,50 +1,42 @@
-namespace CloudHotel.Application.Guests.CreateGuest;
+namespace CloudHotel.Application.Rooms.CreateRoom;
 
-public sealed class CreateGuestValidator : AbstractValidator<CreateGuestCommand>
+public sealed class CreateRoomValidator : AbstractValidator<CreateRoomCommand>
 {
     public const int NameMinimumLenght = 3;
     public const int NameMaximumLenght = 120;
-    public const int EmailMinimumLenght = 3;
-    public const int EmailMaximumLenght = 120;
-    public const int PhoneMinimumLenght = 3;
-    public const int PhoneMaximumLenght = 120;
+    public const int DescriptionMinimumLenght = 3;
+    public const int DescriptionMaximumLenght = 120;
 
-    public CreateGuestValidator()
+    public CreateRoomValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("O nome não pode ser vazio")
-            .WithErrorCode("CreateGuestCommand.EmptyName")
+            .WithErrorCode("CreateRoomCommand.EmptyName")
             .WithSeverity(Severity.Warning);
 
         RuleFor(x => x.Name)
             .Length(NameMinimumLenght, NameMaximumLenght)
             .WithMessage("O nome deve ter entre 3 e 120 caracteres")
-            .WithErrorCode("CreateGuestCommand.NameLenght")
+            .WithErrorCode("CreateRoomCommand.NameLenght")
             .WithSeverity(Severity.Warning);
 
-        RuleFor(x => x.Email)
+        RuleFor(x => x.Description)
             .NotEmpty()
             .WithMessage("A descrição não pode ser vazia")
-            .WithErrorCode("CreateGuestCommand.EmptyEmail")
+            .WithErrorCode("CreateRoomCommand.EmptyDescription")
             .WithSeverity(Severity.Warning);
 
-        RuleFor(x => x.Email)
-            .Length(EmailMinimumLenght, EmailMaximumLenght)
-            .WithMessage("O nome deve ter entre 3 e 120 caracteres")
-            .WithErrorCode("CreateGuestCommand.EmailLenght")
+        RuleFor(x => x.Description)
+            .Length(DescriptionMinimumLenght, DescriptionMaximumLenght)
+            .WithMessage("A descrição deve ter entre 3 e 120 caracteres")
+            .WithErrorCode("CreateRoomCommand.DescriptionLenght")
             .WithSeverity(Severity.Warning);
 
-        RuleFor(x => x.Phone)
+        RuleFor(x => x.Code)
             .NotEmpty()
-            .WithMessage("A descrição não pode ser vazia")
-            .WithErrorCode("CreateGuestCommand.EmptyPhone")
-            .WithSeverity(Severity.Warning);
-
-        RuleFor(x => x.Phone)
-            .Length(PhoneMinimumLenght, PhoneMaximumLenght)
-            .WithMessage("O nome deve ter entre 3 e 120 caracteres")
-            .WithErrorCode("CreateGuestCommand.PhoneLenght")
+            .WithMessage("O código não pode ser vazio")
+            .WithErrorCode("CreateRoomCommand.EmptyCode")
             .WithSeverity(Severity.Warning);
     }
 }

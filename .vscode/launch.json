@@ -63,13 +63,13 @@
     ],
     "compounds": [
         {
-            "name": ".NET Launch / NPM Launch",
+            "name": "NPM Launch | .NET Launch",
             "configurations": ["NPM Launch", ".NET Launch"],
             "stopAll": true
         },
         {
-          "name": ".NET Debug / NPM Debug",
-          "configurations": [".NET Debug", "NPM Debug"],
+          "name": "NPM Debug | .NET Debug",
+          "configurations": ["NPM Debug", ".NET Debug"],
           "stopAll": true
         }
     ]

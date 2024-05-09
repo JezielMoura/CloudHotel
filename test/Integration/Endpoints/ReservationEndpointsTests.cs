@@ -38,9 +38,8 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
 
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?Page=1&Limit=1");
         var room = getResponse!.First().Rooms.First();
-        var roomDetails = $"{room.Id};{room.Code}";
 
-        createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomDetails = roomDetails, Price = Random.Shared.Next(100, 1500) };
+        createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomCode = room.Code, RoomId = room.Id.ToString(), Price = Random.Shared.Next(100, 1500) };
 
         var createResponse = await _client.PostAsJsonAsync("/api/reservations", createCommand);
         var reservationId = await createResponse.Content.ReadFromJsonAsync<Guid>();
@@ -95,9 +94,8 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
 
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?Page=1&Limit=1");
         var room = getResponse!.First().Rooms.First();
-        var roomDetails = $"{room.Id};{room.Code}";
 
-        createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomDetails = roomDetails, Price = Random.Shared.Next(100, 1500) };
+        createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomCode = room.Code, RoomId = room.Id.ToString(), Price = Random.Shared.Next(100, 1500) };
 
         //Act
         var response = await _client.PostAsJsonAsync("/api/reservations", createCommand);
@@ -107,14 +105,13 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     }
 
     [Theory]
-    [InlineData("c93d6070-36ea-4987-be31-cad55e23ad2f;room", "")]
-    [InlineData("", "room")]
-    public async Task Add_InvalidRequest_ShouldReturnBadRequest(string roomDetails, string guestName)
+    [InlineData("c93d6070-36ea-4987-be31-cad55e23ad2f", "")]
+    public async Task Add_InvalidRequest_ShouldReturnBadRequest(string roomId, string guestName)
     {
         //Arrange
         var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
         var departure = arrival.AddDays(_fixture.Create<int>());
-        var command = new CreateReservationCommand(arrival, departure, 100, roomDetails, guestName, "mail", "phone", "doc", "type");
+        var command = new CreateReservationCommand(arrival, departure, 100, roomId, "roomCode", guestName, "mail", "phone", "doc", "type", "", "", "", "", "");
 
         //Act
         var response = await _client.PostAsJsonAsync("/api/reservations", command);
@@ -136,9 +133,8 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
 
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?Page=1&Limit=1");
         var room = getResponse!.First().Rooms.First();
-        var roomDetails = $"{room.Id};{room.Code}";
 
-        createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomDetails = roomDetails};
+        createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomCode = room.Code, RoomId = room.Id.ToString()};
 
         var createResponse = await _client.PostAsJsonAsync("/api/reservations", createCommand);
         var reservationId = await createResponse.Content.ReadFromJsonAsync<Guid>();
@@ -149,25 +145,23 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
         var guestList = await _client.GetFromJsonAsync<IEnumerable<SearchGuestResponse>>("/api/Guests?Page=1&Limit=1");
         var updateCommand = _fixture.Create<UpdateReservationCommand>();
 
-        updateCommand = updateCommand with { Id = reservationId, Arrival = arrival, Departure = departure, RoomId = room.Id, GuestId = guestList!.First().Id, Price = Random.Shared.Next(100, 1500)};
+        updateCommand = updateCommand with { Id = reservationId, Arrival = arrival.AddDays(30), Departure = departure.AddDays(30), RoomId = room.Id, GuestId = guestList!.First().Id, Price = Random.Shared.Next(100, 1500)};
 
         //Act
         var response = await _client.PutAsJsonAsync("/api/reservations", updateCommand);
-        var text = await response.Content.ReadAsStringAsync();
     
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Theory]
-    [InlineData("c93d6070-36ea-4987-be31-cad55e23ad2f;room", "")]
-    [InlineData("", "guest")]
-    public async Task Update_InvalidRequest_ShouldReturnBadRequest(string roomDetails, string guestName)
+    [InlineData("c93d6070-36ea-4987-be31-cad55e23ad2f", "")]
+    public async Task Update_InvalidRequest_ShouldReturnBadRequest(string roomId, string guestName)
     {
         //Arrange
         var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
         var departure = arrival.AddDays(_fixture.Create<int>());
-        var command = new CreateReservationCommand(arrival, departure, 100, roomDetails, guestName, "mail", "phone", "doc", "type");
+        var command = new CreateReservationCommand(arrival, departure, 100, roomId, "", guestName, "mail", "phone", "doc", "type", "", "", "", "", "");
 
         //Act
         var response = await _client.PostAsJsonAsync("/api/reservations", command);
@@ -189,9 +183,8 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
 
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?Page=1&Limit=1");
         var room = getResponse!.First().Rooms.First();
-        var roomDetails = $"{room.Id};{room.Code}";
 
-        createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomDetails = roomDetails, Price = Random.Shared.Next(100, 1500) };
+        createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomCode = room.Code, RoomId = room.Id.ToString(), Price = Random.Shared.Next(100, 1500) };
 
         var createResponse = await _client.PostAsJsonAsync("/api/reservations", createCommand);
         var reservationId = await createResponse.Content.ReadFromJsonAsync<Guid>();

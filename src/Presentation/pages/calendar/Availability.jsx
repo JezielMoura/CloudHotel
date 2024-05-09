@@ -1,6 +1,5 @@
-import { isoToDay } from '../../helpers/dataFormat';
+import { isoToDay } from '../../helpers/dateFormat';
 import React from "react";
-
 
 export function Availability({ availability }) {
 

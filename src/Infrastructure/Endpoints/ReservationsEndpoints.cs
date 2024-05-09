@@ -1,5 +1,6 @@
 using CloudHotel.Application.Reservations.CreateReservation;
 using CloudHotel.Application.Reservations.DeleteReservation;
+using CloudHotel.Application.Reservations.FnrhReservation;
 using CloudHotel.Application.Reservations.GetCalendar;
 using CloudHotel.Application.Reservations.GetReservation;
 using CloudHotel.Application.Reservations.SearchReservation;
@@ -13,6 +14,7 @@ public static class ReservationsEndpoints
     {
         group.MapGet("/{id:guid}", GetHandler).WithName("Get (reservation)");
         group.MapGet("/", SearchHandler).WithName("Search (reservation)");
+        group.MapGet("/fnrh/{id:guid}", GetFnrh).WithName("Get FNRH (reservation)");
         group.MapGet("/calendar", CalendarHandler).WithName("Calendar (reservation)");
         group.MapGet("/summary", SummaryHandler).WithName("Summary (reservation)");
         group.MapPost("/", PostHandler).Validate<CreateReservationCommand>().WithName("Add (reservation)");
@@ -21,6 +23,9 @@ public static class ReservationsEndpoints
     }
 
     private static async Task<Results<Ok<GetReservationResponse>, NotFound<string>>> GetHandler(ISender sender, [AsParameters] GetReservationByIdQuery query) =>
+        await sender.Send(query) is {} reservation ? Ok(reservation) : NotFound("Reservation not found");
+
+    private static async Task<Results<Ok<string>, NotFound<string>>> GetFnrh(ISender sender, [AsParameters] FnrhReservationQuery query) =>
         await sender.Send(query) is {} reservation ? Ok(reservation) : NotFound("Reservation not found");
 
     private static async Task<Ok<IEnumerable<SearchReservationResponse>>> SearchHandler(ISender sender, [AsParameters] SearchReservationQuery query) =>

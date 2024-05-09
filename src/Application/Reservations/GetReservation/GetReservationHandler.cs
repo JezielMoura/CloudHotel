@@ -1,13 +1,17 @@
-using CloudHotel.Application.Reservations.SearchReservation;
+using CloudHotel.Domain.GuestAggregate;
 
 namespace CloudHotel.Application.Reservations.GetReservation;
 
 internal sealed class GetReservationHandler : IRequestHandler<GetReservationByIdQuery, GetReservationResponse?>
 {
     private readonly IReservationRepository _reservationRepository;
+    private readonly IGuestRepository _guestRepository;
 
-    public GetReservationHandler(IReservationRepository reservationRepository) =>
+    public GetReservationHandler(IReservationRepository reservationRepository, IGuestRepository guestRepository)
+    {
         _reservationRepository = reservationRepository;
+        _guestRepository = guestRepository;
+    }
 
     public async Task<GetReservationResponse?> Handle(GetReservationByIdQuery query, CancellationToken cancellationToken)
     {
@@ -16,6 +20,8 @@ internal sealed class GetReservationHandler : IRequestHandler<GetReservationById
         if (reservation is null)
             return null;
 
-        return GetReservationResponse.Create(reservation);
+        var guest = await _guestRepository.Get(reservation.Guest.Id);
+
+        return GetReservationResponse.Create(reservation, guest!);
     }
 }

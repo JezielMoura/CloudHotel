@@ -6,19 +6,25 @@ public sealed record CreateReservationCommand(
     DateOnly Arrival, 
     DateOnly Departure,
     decimal Price,
-    string RoomDetails,
+    string RoomId,
+    string RoomCode,
     string GuestName,
     string GuestEmail,
     string GuestPhone,
     string GuestDocumentNumber,
-    string GuestDocumentType) : IRequest<Result<Guid, Error>>
+    string GuestDocumentType,
+    string AddressStreet,
+    string AddressPostalCode,
+    string AddressCity,
+    string AddressState,
+    string AddressCountry) : IRequest<Result<Guid, Error>>
 {
     public Reservation MapToReservation() =>
-        new(Guid.NewGuid(), Arrival, Departure, Price, new(Guid.Parse(GetRoomDetailsField(0)), GetRoomDetailsField(1)));
+        new(Guid.NewGuid(), Arrival, Departure, Price, new(Guid.Parse(RoomId), RoomCode));
 
     public Guest MapToGuest() =>
-        new(Guid.NewGuid(), GuestName, GuestEmail, GuestPhone, new(GuestDocumentType, GuestDocumentNumber), Address.Empty);
+        new(Guid.NewGuid(), GuestName, GuestEmail, GuestPhone, new(GuestDocumentNumber, GuestDocumentType), MapToAddress());
 
-    public string GetRoomDetailsField(int index) =>
-        RoomDetails.Split(';')[index];
+    private Address MapToAddress() =>
+        new Address(AddressStreet, AddressPostalCode, AddressCity, AddressState, AddressCountry);
 }

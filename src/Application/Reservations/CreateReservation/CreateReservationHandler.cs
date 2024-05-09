@@ -19,6 +19,10 @@ internal sealed class CreateReservationHandler : IRequestHandler<CreateReservati
     {
         var guest = command.MapToGuest();
         var reservation = command.MapToReservation();
+        var reservationCountOnRange = await _reservationRepository.Count(reservation.Id, reservation.Room.Id, command.Arrival, command.Departure);
+
+        if (reservationCountOnRange > 0)
+            return new Error(Errors: [new ("A data e acomodação selecionada não está disponível")]);
 
         reservation.SetGuestDetails(guest.Id, guest.Name);
         reservation.SetCreatedOnWithCurrentDate();

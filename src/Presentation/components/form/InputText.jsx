@@ -1,7 +1,19 @@
 import React from "react";
 
-export function InputText({ name, label="" }) {
+export function InputText({ name, value = "", required = false, label= "" }) {
   return (
-    <input type="text" className="border-gray-200 px-2 py-1 rounded w-full mt-3" name={name} id={name} placeholder={label} />
+    <div className="w-full">
+      <label 
+        htmlFor={name} 
+        className="block py-0.5">{label}
+      </label>
+      <input 
+        type="text" 
+        className="border-gray-200 px-2 py-0.5 rounded w-full mb-2" 
+        name={name} 
+        id={name}
+        defaultValue={value}
+        required={required} />
+    </div>
   )
 }

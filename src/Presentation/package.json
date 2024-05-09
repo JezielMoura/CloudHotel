@@ -12,10 +12,15 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.23.0",
-    "react-router-dom": "^6.23.0"
+    "react-router-dom": "^6.23.0",
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@tailwindcss/vite": "next",
+    "@types/react": "18.2.79",
+    "@types/react-dom": "18.2.25",
+    "@types/react-router": "5.1.20",
+    "@types/react-router-dom": "5.3.3",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "tailwindcss": "next",
     "vite": "^5.1.4"

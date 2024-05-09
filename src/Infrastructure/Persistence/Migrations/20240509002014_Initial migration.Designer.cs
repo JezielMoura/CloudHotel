@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CloudHotel.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240419221502_Initial migration")]
+    [Migration("20240509002014_Initial migration")]
     partial class Initialmigration
     {
         /// <inheritdoc />
@@ -113,6 +113,9 @@ namespace CloudHotel.Infrastructure.Persistence.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Arrival");
@@ -147,6 +150,17 @@ namespace CloudHotel.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rooms", (string)null);
+                });
+
+            modelBuilder.Entity("CloudHotel.Domain.SettingsAggregate.Settings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Settings", (string)null);
                 });
 
             modelBuilder.Entity("CloudHotel.Domain.ReservationAggregate.Reservation", b =>
@@ -215,6 +229,50 @@ namespace CloudHotel.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Room")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CloudHotel.Domain.SettingsAggregate.Settings", b =>
+                {
+                    b.OwnsOne("CloudHotel.Domain.SettingsAggregate.PropertyDetails", "Property", b1 =>
+                        {
+                            b1.Property<Guid>("SettingsId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Document")
+                                .IsRequired()
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("PropertyDocument");
+
+                            b1.Property<string>("Email")
+                                .IsRequired()
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("PropertyEmail");
+
+                            b1.Property<byte[]>("Image")
+                                .IsRequired()
+                                .HasColumnType("bytea")
+                                .HasColumnName("PropertyImage");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("PropertyName");
+
+                            b1.Property<string>("Phone")
+                                .IsRequired()
+                                .HasColumnType("varchar(20)")
+                                .HasColumnName("PropertyPhone");
+
+                            b1.HasKey("SettingsId");
+
+                            b1.ToTable("Settings");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SettingsId");
+                        });
+
+                    b.Navigation("Property")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

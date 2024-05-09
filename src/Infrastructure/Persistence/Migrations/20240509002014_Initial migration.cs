@@ -48,6 +48,22 @@ namespace CloudHotel.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Settings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PropertyName = table.Column<string>(type: "varchar(60)", nullable: false),
+                    PropertyEmail = table.Column<string>(type: "varchar(60)", nullable: false),
+                    PropertyPhone = table.Column<string>(type: "varchar(20)", nullable: false),
+                    PropertyDocument = table.Column<string>(type: "varchar(30)", nullable: false),
+                    PropertyImage = table.Column<byte[]>(type: "bytea", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reservations",
                 columns: table => new
                 {
@@ -55,6 +71,7 @@ namespace CloudHotel.Infrastructure.Persistence.Migrations
                     Arrival = table.Column<DateOnly>(type: "date", nullable: false),
                     Departure = table.Column<DateOnly>(type: "date", nullable: false),
                     Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     RoomId = table.Column<Guid>(type: "uuid", nullable: false),
                     RoomCode = table.Column<string>(type: "varchar(60)", nullable: false),
                     GuestId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -104,6 +121,9 @@ namespace CloudHotel.Infrastructure.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Reservations");
+
+            migrationBuilder.DropTable(
+                name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "Guests");

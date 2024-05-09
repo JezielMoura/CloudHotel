@@ -1,0 +1,112 @@
+@using CloudHotel.Application.Reservations.GetReservation;
+@using CloudHotel.Application.Settings.GetSettings;
+@using CloudHotel.Domain.ReservationAggregate;
+@using System.Globalization
+
+@namespace CloudHotel.Infrastructure.Templates
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml" lang="en">
+<head>
+  <title>FNRH</title>
+  <meta property="og:title" content="Ordem de Serviço">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    
+<body style="width: 100%; margin: 0; padding:0; border: 0; font-family:sans-serif; font-limit:16px; color:#33475B; word-break:break-word">
+    <div style="margin: 0 auto; width: 800px;">
+        <table width="100%" cellspacing="10px">
+            <tr>
+                <td align="left">
+                    <img src="data:image/png;base64,@Settings.PropertyImage" width="120px" height="120px">
+                </td>
+                <td align="right">
+                    <p style="margin: 5px 0; font-limit: 20px;">@Settings.PropertyName</p>
+                    <p style="margin: 5px 0;">@Settings.PropertyName</p>
+                    <p style="margin: 5px 0;">@Settings.PropertyEmail</p>
+                    <p style="margin: 5px 0;">@Settings.PropertyDocument</p>
+                </td>
+            </tr>
+        </table>
+
+        <table width="100%" cellpadding="5px" style="border-collapse: collapse;">
+            <tr>
+                <td align="left">
+                    <p style="font-limit: 20px; margin: 25px 0;">Ficha Nacional de Registro de Hóspede</p>
+                </td>
+                <td align="right">
+                    <p style="font-limit: 20px; margin: 25px 0;">@Reservation.Arrival.ToString("dd/MM/yyyy")</p>
+                </td>
+            </tr>
+        </table>
+
+        <table width="100%" cellpadding="5px" style="border-collapse: collapse; margin-top: 10px;">
+            <tr bgcolor="#F3F4F6">
+                <td><p style="margin: 0 5px; color: #000000">Check-in</p></td>
+                <td><p style="margin: 0 5px; color: #000000">Check-out</p></td>
+                <td><p style="margin: 0 5px; color: #000000">Valor</p></td>
+                <td><p style="margin: 0 5px; color: #000000">Status</p></td>
+                <td><p style="margin: 0 5px; color: #000000">UH</p></td>
+            </tr>
+            <tr>
+                <td><p style="margin: 0 5px;">@Reservation.Arrival.ToString("dd/MM/yyyy")</p></td>
+                <td><p style="margin: 0 5px;">@Reservation.Departure.ToString("dd/MM/yyyy")</p></td>
+                <td><p style="margin: 0 5px;">@String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", Reservation.Price)</p></td>
+                <td><p style="margin: 0 5px;">@ReservationStatus.FromNumber(Reservation.Status).Description</p></td>
+                <td><p style="margin: 0 5px;">@Reservation.RoomCode</p></td>
+            </tr>
+        </table>
+
+        <table width="100%" cellpadding="5px" style="border-collapse: collapse; margin-top: 15px;">
+            <tr bgcolor="#F3F4F6">
+                <td><p style="margin: 0 5px; color: #000000;">Nome</p></td>
+                <td><p style="margin: 0 5px; color: #000000">E-mail</p></td>
+                <td><p style="margin: 0 5px; color: #000000">Telefone</p></td>
+                <td><p style="margin: 0 5px; color: #000000">Documento</p></td>
+            </tr>
+            <tr>
+                <td><p style="margin: 0 5px;">@Reservation.GuestName</p></td>
+                <td><p style="margin: 0 5px;">@Reservation.GuestEmail</p></td>
+                <td><p style="margin: 0 5px;">@Reservation.GuestPhone</p></td>
+                <td><p style="margin: 0 5px;">@Reservation.GuestDocumentNumber (@Reservation.GuestDocumentType)</p></td>
+            </tr>
+        </table>
+
+        <table width="100%" cellpadding="5px" style="border-collapse: collapse; margin-top: 15px;">
+            <tr bgcolor="#F3F4F6">
+                <td><p style="margin: 0 5px; color: #000000">Endereço</p></td>
+                <td><p style="margin: 0 5px; color: #000000;">CEP</p></td>
+            </tr>
+            <tr>
+                <td><p style="margin: 0 5px;">@Reservation.AddressStreet</p></td>
+                <td><p style="margin: 0 5px;">@Reservation.AddressPostalCode</p></td>
+            </tr>
+        </table>
+
+        <table width="100%" cellpadding="5px" style="border-collapse: collapse; margin-top: 15px;">
+            <tr bgcolor="#F3F4F6">
+                <td><p style="margin: 0 5px; color: #000000">Cidade</p></td>
+                <td><p style="margin: 0 5px; color: #000000">Estado</p></td>
+                <td><p style="margin: 0 5px; color: #000000">País</p></td>
+            </tr>
+            <tr>
+                <td><p style="margin: 0 5px;">@Reservation.AddressCity</p></td>
+                <td><p style="margin: 0 5px;">@Reservation.AddressState</p></td>
+                <td><p style="margin: 0 5px;">@Reservation.AddressCountry</p></td>
+            </tr>
+        </table>
+
+    </div>
+</body>
+</html>
+
+@code {
+    [Parameter]
+    public GetReservationResponse Reservation { get; set; } = null!;
+
+    [Parameter]
+    public GetSettingsResponse Settings { get; set; } = null!;
+}
+

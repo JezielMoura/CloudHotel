@@ -5,6 +5,7 @@ public sealed class Reservation : Entity, IAggregateRoot
     public DateOnly Arrival { get; private set; }
     public DateOnly Departure { get; private set; }
     public decimal Price { get; private set; }
+    public ReservationStatus Status { get; private set; }
     public RoomDetails Room { get; private set; }
     public GuestDetails Guest { get; private set; } = null!;
     public DateTime CreatedOn { get; private set; }
@@ -14,12 +15,16 @@ public sealed class Reservation : Entity, IAggregateRoot
         Id = id;
         Arrival = arrival;
         Departure = departure;
-        Price = price;  
+        Price = price;
         Room = room;
+        Status = ReservationStatus.Pendent;
     }
 
     public void SetGuestDetails(Guid id, string name) =>
         Guest = new(id, name);
+
+    public void SetStatus(ReservationStatus status) =>
+        Status = status;
 
     public int GetNightsNumber() =>
         Departure.DayNumber - Arrival.DayNumber;
