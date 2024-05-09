@@ -24,7 +24,6 @@ public sealed class ReservationHandlersTests
         _fixture = new Fixture();
         _fixture.Register(() => DateOnly.Parse("2025-01-01"));
         _fixture.Register(() => Guid.NewGuid().ToString());
-        _fixture.Register(() => new Random().Next(0, 4));
     }
     
     [Fact]
@@ -70,7 +69,7 @@ public sealed class ReservationHandlersTests
         _reservationRepository.Count(default, default, command.Arrival, command.Departure).ReturnsForAnyArgs(1);
 
         //Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command with { Status = 0 }, CancellationToken.None);
 
         //Assert
         result.IsFailure.Should().BeTrue();
@@ -87,7 +86,7 @@ public sealed class ReservationHandlersTests
         _unitOfWork.Commit().ReturnsForAnyArgs(true);
 
         //Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command with { Status = 0 }, CancellationToken.None);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
