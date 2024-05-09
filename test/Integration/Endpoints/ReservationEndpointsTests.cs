@@ -13,7 +13,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     private readonly HttpClient _client;
     private readonly CloudHotelApiFixture  _factory;
     private readonly Fixture _fixture;
-    private readonly DateRange _dateRange = new (DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(30)));
+    private readonly DateRange _dateRange = new (DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(DateTime.Now.AddDays(90)));
 
     public ReservationEndpointsTests(CloudHotelApiFixture factory)
     {
@@ -29,7 +29,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Get_ReservationExists_ShouldReturnOK()
     {
         //Arrange
-        var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
+        var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
         var departure = arrival.AddDays(_fixture.Create<int>());
         var createCommand = _fixture.Create<CreateReservationCommand>();
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
@@ -68,8 +68,8 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Search_ShouldReturnOk()
     {
         //Arrange
-        var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
-        var departure = arrival.AddDays(_fixture.Create<int>());
+        var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
+        var departure = arrival.AddDays(1);
         var command = _fixture.Create<CreateReservationCommand>();
         command = command with { Arrival = arrival, Departure = departure, Price = Random.Shared.Next(100, 1500) };
         await _client.PostAsJsonAsync("/api/reservations", command);
@@ -85,7 +85,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Add_ValidRequest_ShouldReturnOk()
     {
         //Arrange
-        var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
+        var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
         var departure = arrival.AddDays(_fixture.Create<int>());
         var createCommand = _fixture.Create<CreateReservationCommand>();
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
@@ -109,7 +109,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Add_InvalidRequest_ShouldReturnBadRequest(string roomId, string guestName)
     {
         //Arrange
-        var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
+        var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
         var departure = arrival.AddDays(_fixture.Create<int>());
         var command = new CreateReservationCommand(arrival, departure, 100, roomId, "roomCode", guestName, "mail", "phone", "doc", "type", "", "", "", "", "");
 
@@ -124,7 +124,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Update_ValidRequest_ShouldReturnOk()
     {
         //Arrange
-        var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
+        var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
         var departure = arrival.AddDays(_fixture.Create<int>());
         var createCommand = _fixture.Create<CreateReservationCommand>();
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
@@ -145,7 +145,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
         var guestList = await _client.GetFromJsonAsync<IEnumerable<SearchGuestResponse>>("/api/Guests?Page=1&Limit=1");
         var updateCommand = _fixture.Create<UpdateReservationCommand>();
 
-        updateCommand = updateCommand with { Id = reservationId, Arrival = arrival.AddDays(30), Departure = departure.AddDays(30), RoomId = room.Id, GuestId = guestList!.First().Id, Price = Random.Shared.Next(100, 1500)};
+        updateCommand = updateCommand with { Id = reservationId, Status = 1, Arrival = arrival.AddDays(30), Departure = departure.AddDays(30), RoomId = room.Id, GuestId = guestList!.First().Id, Price = Random.Shared.Next(100, 1500)};
 
         //Act
         var response = await _client.PutAsJsonAsync("/api/reservations", updateCommand);
@@ -159,7 +159,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Update_InvalidRequest_ShouldReturnBadRequest(string roomId, string guestName)
     {
         //Arrange
-        var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
+        var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
         var departure = arrival.AddDays(_fixture.Create<int>());
         var command = new CreateReservationCommand(arrival, departure, 100, roomId, "", guestName, "mail", "phone", "doc", "type", "", "", "", "", "");
 
@@ -174,8 +174,8 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Delete_ShouldReturnOK()
     {
         //Arrange
-        var arrival = _dateRange.Dates[Random.Shared.Next(0, 30)];
-        var departure = arrival.AddDays(_fixture.Create<int>());
+        var arrival = _dateRange.Dates[Random.Shared.Next(0, 90)];
+        var departure = arrival.AddDays(1);
         var createCommand = _fixture.Create<CreateReservationCommand>();
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
 
