@@ -84,7 +84,7 @@ public sealed class ReservationHandlersTests
         var command = _fixture.Create<UpdateReservationCommand>();
 
         _reservationRepository.Count(default, command.RoomId, command.Arrival, command.Departure).ReturnsForAnyArgs(0);
-        _unitOfWork.Commit(Guid.Empty).ReturnsForAnyArgs(Guid.NewGuid());
+        _unitOfWork.Commit().ReturnsForAnyArgs(true);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);

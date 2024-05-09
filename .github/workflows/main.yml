@@ -58,7 +58,7 @@ jobs:
         image: postgres
         env:
           POSTGRES_PASSWORD: postgres
-          PostgresConnectionString: server=127.0.0.1;database=cloudhotel;username=postgres;password=postgres
+          PostgresConnectionString: server=localhost;database=cloudhotel;username=postgres;password=postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
