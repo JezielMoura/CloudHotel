@@ -49,7 +49,7 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
 
-  migrations:
+  integration:
     runs-on: ubuntu-latest
     needs: build
     env:
@@ -80,19 +80,6 @@ jobs:
       
     - name: run migrations
       run: dotnet ef database update -p src/Infrastructure
-
-  integration:
-    runs-on: ubuntu-latest
-    needs: migrations
-
-    steps:
-    - name: checkout
-      uses: actions/checkout@v3
-
-    - name: setup
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
       
     - name: test
       run: dotnet test test/Integration
