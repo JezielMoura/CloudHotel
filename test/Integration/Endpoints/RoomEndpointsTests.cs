@@ -1,6 +1,7 @@
 using CloudHotel.Application.Rooms.CreateRoom;
 using CloudHotel.Application.Rooms.SearchRoom;
 using CloudHotel.Application.Rooms.UpdateRoom;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CloudHotel.Integration.Tests.Endpoints;
 
@@ -24,7 +25,7 @@ public class RoomEndpointsTests : IClassFixture<CloudHotelApiFixture>
     {
         //Arrange
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
-        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand);
+        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Name = "Teste", Code = "TST" });
 
         //Act
         var response = await _client.GetAsync("/api/rooms?page=1&limit=1");
@@ -37,11 +38,12 @@ public class RoomEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Add_ValidRequest_ShouldReturnOk()
     {
         //Arrange
-        var command = _fixture.Create<CreateRoomCommand>();
+        var createRoomCommand = _fixture.Create<CreateRoomCommand>();
 
         //Act
-        var response = await _client.PostAsJsonAsync("/api/rooms", command);
-    
+        var response = await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Name = "Teste", Code = "TST" });
+
+
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -54,11 +56,11 @@ public class RoomEndpointsTests : IClassFixture<CloudHotelApiFixture>
     public async Task Add_InvalidRequest_ShouldReturnBadRequest(string name, string description, string code)
     {
         //Arrange
-        var command = new CreateRoomCommand(name, description, code);
+        var createRoomCommand = new CreateRoomCommand(name, description, code);
 
         //Act
-        var response = await _client.PostAsJsonAsync("/api/rooms", command);
-    
+        var response = await _client.PostAsJsonAsync("/api/rooms", createRoomCommand);
+
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
@@ -68,10 +70,10 @@ public class RoomEndpointsTests : IClassFixture<CloudHotelApiFixture>
     {
         //Arrange
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
-        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand);
+        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Name = "Teste", Code = "TST" });
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?page=1&limit=1");
         var room = getResponse!.First().Rooms.First();
-        var command = new UpdateRoomCommand(room.Id, "new name", "new description", "new code");
+        var command = new UpdateRoomCommand(room.Id, "Teste Alterado", "new description", "TST(1)");
 
         //Act
         var response = await _client.PutAsJsonAsync("/api/rooms", command);
@@ -89,7 +91,7 @@ public class RoomEndpointsTests : IClassFixture<CloudHotelApiFixture>
     {
         //Arrange
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
-        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand);
+        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Name = "Teste", Code = "TST" });
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomResponse>>("/api/rooms?page=1&limit=1");
         var roomId = getResponse!.First().Id;
         var command = new UpdateRoomCommand(roomId, name, description, code);
@@ -106,7 +108,7 @@ public class RoomEndpointsTests : IClassFixture<CloudHotelApiFixture>
     {
         //Arrange
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
-        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand);
+        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Name = "Teste", Code = "TST" });
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?page=1&limit=1");
         var room = getResponse!.First().Rooms.First();
 

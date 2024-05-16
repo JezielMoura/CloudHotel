@@ -34,7 +34,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
         var createCommand = _fixture.Create<CreateReservationCommand>();
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
 
-        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Quantity = 1});
+        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Quantity = 1, Name = "Teste", Code = "TST" });
 
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?Page=1&Limit=1");
         var room = getResponse!.First().Rooms.First();
@@ -83,10 +83,11 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
         var createCommand = _fixture.Create<CreateReservationCommand>();
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
 
-        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Quantity = 1});
+        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Quantity = 1, Name = "Teste",Code = "TST" });
 
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?Page=1&Limit=1");
-        var room = getResponse!.First().Rooms.First();
+
+        var room = getResponse!.First().Rooms.First();        
 
         createCommand = createCommand with { Arrival = arrival, Departure = departure, RoomCode = room.Code, RoomId = room.Id.ToString(), Price = Random.Shared.Next(100, 1500) };
 
@@ -122,7 +123,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
         var createCommand = _fixture.Create<CreateReservationCommand>();
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
 
-        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Quantity = 1 });
+        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Quantity = 1, Name = "Teste", Code = "TST" });
 
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?Page=1&Limit=1");
         var room = getResponse!.First().Rooms.First();
@@ -138,11 +139,11 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
         var guestList = await _client.GetFromJsonAsync<IEnumerable<SearchGuestResponse>>("/api/Guests?Page=1&Limit=1");
         var updateCommand = _fixture.Create<UpdateReservationCommand>();
 
-        updateCommand = updateCommand with { Id = reservationId, Status = 1, Arrival = arrival.AddDays(30), Departure = departure.AddDays(30), RoomId = room.Id, GuestId = guestList!.First().Id, Price = Random.Shared.Next(100, 1500)};
+        updateCommand = updateCommand with { Id = reservationId, RoomCode = "TST (1)", Status = 1, Arrival = arrival.AddDays(30), Departure = departure.AddDays(30), RoomId = room.Id, GuestId = guestList!.First().Id, Price = Random.Shared.Next(100, 1500), CreatedOn = DateTime.UtcNow};
 
         //Act
         var response = await _client.PutAsJsonAsync("/api/reservations", updateCommand);
-    
+        var aresponse = await response.Content.ReadAsStringAsync();
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -172,7 +173,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
         var createCommand = _fixture.Create<CreateReservationCommand>();
         var createRoomCommand = _fixture.Create<CreateRoomCommand>();
 
-        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Quantity = 1});
+        await _client.PostAsJsonAsync("/api/rooms", createRoomCommand with { Quantity = 1, Name = "Teste", Code = "TST" });
 
         var getResponse = await _client.GetFromJsonAsync<IEnumerable<SearchRoomGroupResponse>>("/api/rooms?Page=1&Limit=1");
         var room = getResponse!.First().Rooms.First();
@@ -184,7 +185,7 @@ public class ReservationEndpointsTests : IClassFixture<CloudHotelApiFixture>
 
         //Act
         var response = await _client.DeleteAsync($"/api/reservations/{reservationId}");
-    
+
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }

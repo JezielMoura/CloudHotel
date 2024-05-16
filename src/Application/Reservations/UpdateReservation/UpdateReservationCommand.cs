@@ -20,10 +20,11 @@ public sealed record UpdateReservationCommand(
     string AddressPostalCode,
     string AddressCity,
     string AddressState,
-    string AddressCountry) : IRequest<Result<bool, Error>>
+    string AddressCountry,
+    DateTime CreatedOn) : IRequest<Result<bool, Error>>
 {
     public Reservation MapToReservation() =>
-        new (Id, Arrival, Departure, Price, new(RoomId, RoomCode));
+        new (Id, Arrival, Departure, Price, new(RoomId, RoomCode),CreatedOn);
 
     public Guest MapToGuest() =>
         new (GuestId, GuestName, GuestEmail, GuestPhone, new(GuestDocumentType, GuestDocumentNumber), MapToAddress());

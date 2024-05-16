@@ -62,7 +62,7 @@ public static class ServiceCollectionExtensions
     public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options => {
-            options.UseNpgsql(configuration["PostgresConnectionString"]);
+            options.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=941690;Database=CloudHotel");
         });
         
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<AppDbContext>());

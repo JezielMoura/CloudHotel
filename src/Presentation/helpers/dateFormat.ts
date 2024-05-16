@@ -11,6 +11,13 @@ export function isoToDay(value: string) {
 }
 
 export function isoBrazilFormat(value: string) {
+    let dateStr = value;
+    
+    if (!dateStr.includes('T')) {
+        const date = new Date(dateStr);
+        date.setDate(date.getDate() + 1); // Add one day
+        return new Intl.DateTimeFormat('pt-BR').format(date);
+    }
     const date = new Date(value);
     const localeDate = new Intl.DateTimeFormat('pt-BR').format(date);
 

@@ -19,6 +19,16 @@ public sealed class Reservation : Entity, IAggregateRoot
         Room = room;
         Status = ReservationStatus.Pendent;
     }
+    public Reservation(Guid id, DateOnly arrival, DateOnly departure, decimal price, RoomDetails room, DateTime createdOn)
+    {
+        Id = id;
+        Arrival = arrival;
+        Departure = departure;
+        Price = price;
+        Room = room;
+        CreatedOn = createdOn;
+        Status = ReservationStatus.Pendent;
+    }
 
     public void SetGuestDetails(Guid id, string name) =>
         Guest = new(id, name);

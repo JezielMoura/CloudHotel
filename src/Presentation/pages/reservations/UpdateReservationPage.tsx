@@ -85,6 +85,8 @@ export function UpdateReservationPage()
         <input type="hidden" name="id" value={reservation.id} />
         <input type="hidden" name="guestId" value={reservation.guestId} />
         <input type="hidden" name="roomCode" value={reservation.roomCode} />
+        <input type="hidden" name="createdOn" value={reservation.createdOn} />
+
         <div className="flex gap-2">
             <InputDate name={'arrival'} label={'Chegada'} width="w-full mb-3" required={true} value={reservation.arrival} />
             <InputDate name={'departure'} label={'Saída'} width="w-full mb-3" required={true} value={reservation.departure} />
