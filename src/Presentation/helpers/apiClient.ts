@@ -15,7 +15,6 @@ export async function post(path: string, data: any) {
 }
 
 export async function put(path: string, data: any) {
-  console.log(data);
   const response = await fetch(path, {
     method: "PUT",
     body: JSON.stringify(data),
