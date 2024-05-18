@@ -15,8 +15,8 @@ export default defineConfig({
   server: {
     port: 3000,
     host: '0.0.0.0',
-    https: {
-      pfx: '/Users/moura/.aspnet/dev-certs/https/aspnetcore-localhost-82189636C550648379145FE34B64385931884357.pfx'
+    http: {
+      //pfx: '/Users/moura/.aspnet/dev-certs/https/aspnetcore-localhost-82189636C550648379145FE34B64385931884357.pfx'
     },
     proxy: {
       '/api': {

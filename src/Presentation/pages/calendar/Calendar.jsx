@@ -27,7 +27,7 @@ export function Calendar() {
         </Form>
       </div>
       <div className="overflow-auto pb-2">
-        {roomGroupList.map(roomGroup => <RoomGroup roomGroup={roomGroup} key={roomGroup.name} />)}
+       {roomGroupList.map(roomGroup => <RoomGroup roomGroup={roomGroup} key={roomGroup.name} />)}
       </div>
     </div>
   );

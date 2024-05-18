@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace CloudHotel.Application.Rooms.SearchRoom;
 
 internal sealed class SearchRoomHandler(IAppDbContext appDbContext) : IRequestHandler<SearchRoomQuery, IEnumerable<SearchRoomGroupResponse>>
@@ -7,12 +9,10 @@ internal sealed class SearchRoomHandler(IAppDbContext appDbContext) : IRequestHa
         var rooms = await appDbContext.Rooms
             .OrderBy(x => x.Name)
             .ThenBy(x => x.Code)
-            .Skip(query.Offset)
-            .Take(query.Limit)
             .ToListAsync(cancellationToken);
 
         var roomGroups = rooms.GroupBy(g => g.Name);
-
+       
         return roomGroups.Select(SearchRoomGroupResponse.Create);
     }
 }

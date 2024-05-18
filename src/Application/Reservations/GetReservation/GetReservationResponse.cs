@@ -28,7 +28,7 @@ public sealed record GetReservationResponse(
     string AddressCountry,
     int TotalNights,
     decimal NightPrice,
-    DateTime CreatedOn,
+    DateTime? CreatedOn,
     int Status,
     IEnumerable<GetReservationStatusResponse> ReservationStatuses
 )

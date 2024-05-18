@@ -3,7 +3,7 @@ namespace CloudHotel.Application.Rooms.CreateRoom;
 public sealed class CreateRoomValidator : AbstractValidator<CreateRoomCommand>
 {
     public const int NameMinimumLenght = 3;
-    public const int NameMaximumLenght = 120;
+    public const int NameMaximumLenght = 45;
     public const int DescriptionMinimumLenght = 3;
     public const int DescriptionMaximumLenght = 120;
 
@@ -17,7 +17,7 @@ public sealed class CreateRoomValidator : AbstractValidator<CreateRoomCommand>
 
         RuleFor(x => x.Name)
             .Length(NameMinimumLenght, NameMaximumLenght)
-            .WithMessage("O nome deve ter entre 3 e 120 caracteres")
+            .WithMessage("O nome deve ter entre 3 e 45 caracteres")
             .WithErrorCode("CreateRoomCommand.NameLenght")
             .WithSeverity(Severity.Warning);
 
@@ -29,7 +29,7 @@ public sealed class CreateRoomValidator : AbstractValidator<CreateRoomCommand>
 
         RuleFor(x => x.Description)
             .Length(DescriptionMinimumLenght, DescriptionMaximumLenght)
-            .WithMessage("A descrição deve ter entre 3 e 120 caracteres")
+            .WithMessage("A descrição deve ter entre 3 e 45 caracteres")
             .WithErrorCode("CreateRoomCommand.DescriptionLenght")
             .WithSeverity(Severity.Warning);
 
@@ -39,4 +39,5 @@ public sealed class CreateRoomValidator : AbstractValidator<CreateRoomCommand>
             .WithErrorCode("CreateRoomCommand.EmptyCode")
             .WithSeverity(Severity.Warning);
     }
+
 }
