@@ -1,5 +1,11 @@
 # CloudHotel
 
+### Tema escolhido
+Sistema de gestão de reservas para hotéis e pousadas
+
+### Arquitetura
+Clean Architecture e conceitos de DDD
+
 #### Sistema para gestão de Reservas em Hotéis e Pousadas
 
 ## Requisitos
