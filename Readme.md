@@ -23,4 +23,5 @@ Clean Architecture e conceitos de DDD
 
 * Criar uma variável de ambiente ou user secrets de nome "PostgresConnectionString" contendo uma connection string para PostgreSQL
 * Executar a migration com o comando "dotnet ef database update  -p src/Infrastructure""
-* Executar "dotnet run --project src/Infrastructure" e "cd src/Presentation && npm run dev" (já tem o launch pronto para o VSCode)
+* Executar o backend "dotnet run --project src/Infrastructure" 
+* Executar o frontend "cd src/Presentation && npm i && npm run dev" (projeto com launch pronto pro VSCode)
