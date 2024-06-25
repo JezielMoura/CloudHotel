@@ -8,6 +8,8 @@
     <AssemblyName>CloudHotel.Infrastructure</AssemblyName>
     <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <GarbageCollectionAdaptationMode>1</GarbageCollectionAdaptationMode>
     <UserSecretsId>549cb153-7957-4a14-a7ec-889c549fc58a</UserSecretsId>
   </PropertyGroup>
 
