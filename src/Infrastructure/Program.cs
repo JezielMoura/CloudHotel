@@ -22,6 +22,13 @@ app.MapGroup("/api/reservations").WithTags("Reservations").MapReservationsEndpoi
 app.MapGroup("/api/guests").WithTags("Guests").MapGuestsEndpoints();
 app.MapGroup("/api/settings").WithTags("Settings").MapSettingsEndpoints();
 
+if (app.Environment.IsDevelopment() is false) 
+{
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+    app.MapFallbackToFile("index.html");
+}
+
 app.Run();
 
 public partial class Program;
