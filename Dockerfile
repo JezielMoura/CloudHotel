@@ -7,6 +7,7 @@ RUN apt-get install -y nodejs
 RUN npm install -g npm@latest
 
 RUN dotnet publish -c Release -o api src/Infrastructure
+RUN cd src/Presentation
 RUN npm install
 RUN npm run build
 
