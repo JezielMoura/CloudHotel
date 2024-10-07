@@ -1,0 +1,64 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudhotel
+  labels:
+    app: cloudhotel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudhotel
+  template:
+    metadata:
+      labels:
+        app: cloudhotel
+    spec:
+      containers:
+        - name: cloudhotel
+          image: ghcr.io/jezielmoura/cloudhotel:dc4a9d9e8a2d993f337080c6b60b394ce5dc1aa0
+          ports:
+            - containerPort: 8080
+          env:
+          - name: PostgresConnectionString
+            value: "Server=ep-billowing-cell-929977.us-east-1.aws.neon.tech;Database=cloudhotel;Username=JezielMoura;Pwd=daBnDVov1E7I"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 1000Mi
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudhotel
+  labels:
+    app: cloudhotel
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+  selector:
+    app: cloudhotel
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cloudhotel
+spec:
+  rules:
+    - host: cloudhotel.nett.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  cloudhotel
+                port:
+                  number: 8080

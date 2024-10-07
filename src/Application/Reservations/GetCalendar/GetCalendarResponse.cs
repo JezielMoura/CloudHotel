@@ -6,7 +6,7 @@ public record GetCalendarResponse(string Name, IEnumerable<AvailabilityResponse>
     {
         var groupReservations = reservations.Where(x => roomGroup.Select(x => x.Id).Contains(x.Room.Id));
         var availabilitys = range.Dates.Select(date => AvailabilityResponse.Create(date, groupReservations, roomGroup.Count()));
-        var roomGroupCalendar = roomGroup.Select(room => RoomResponse.Create(room, groupReservations, range));
+        var roomGroupCalendar = roomGroup.Select(room => RoomResponse.Create(room, groupReservations, range)).OrderBy(x => x.Code);
         return new(roomGroup.Key, availabilitys, roomGroupCalendar);
     }
 }
